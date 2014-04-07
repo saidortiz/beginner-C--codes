@@ -1,0 +1,425 @@
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+ 
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        class arbol
+        {
+            private double info;
+            private arbol izq, der;
+ 
+            // Constructor Nodo
+            public arbol()
+            {
+                info = 0;
+                izq = null;
+                der = null;
+            }
+ 
+            // Apuntador Raiz
+            public arbol raiz = null;
+ 
+            public void Insertar()
+            {
+                arbol p = new arbol();
+                arbol q = new arbol();
+                int bandera = 0;
+                double dato;
+                p.izq = null;
+                p.der = null;
+ 
+                Console.Write("Introduce el Dato: ");
+                dato = Double.Parse(Console.ReadLine());
+                p.info = dato;
+ 
+                if (raiz == null)
+                {
+                    raiz = p;
+                }
+ 
+                else
+                {
+                    q = raiz;
+                    while (bandera != 1)
+                    {
+                        if (p.info < q.info)
+                        {
+                            if (q.izq == null)
+                            {
+                                q.izq = p;
+                                bandera = 1;
+                            }
+ 
+                            else
+                            {
+                                q = q.izq;
+                            }
+ 
+                        }
+ 
+                        else
+                        {
+                            if (q.der == null)
+                            {
+                                q.der = p;
+                                bandera = 1;
+                            }
+ 
+                            else
+                            {
+                                q = q.der;
+                            }
+                        }
+                    }
+                }
+            }
+            //preorden
+            public void Preorden(arbol temp)
+            {
+                if (temp != null)
+                {
+                    Console.WriteLine(temp.info);
+                    if (temp.izq != null)
+                    {
+                        Preorden(temp.izq);
+                    }
+                    if (temp.der != null)
+                    {
+                        Preorden(temp.der);
+                    }
+                }
+ 
+                else
+                {
+                    Console.WriteLine("\nEl Arbol Binario Esta Vacio");
+                }
+            }
+ 
+            public void Inorden(arbol temp) // inorden
+            {
+                if (temp != null)
+                {
+                    if (temp.izq != null)
+                    {
+                        Inorden(temp.izq);
+                    }
+ 
+                    Console.WriteLine(temp.info);
+ 
+                    if (temp.der != null)
+                    {
+                        Inorden(temp.der);
+                    }
+ 
+                }
+ 
+                else
+                {
+                    Console.WriteLine("\nEl Arbol Binario Esta Vacio");
+                }
+            }
+ 
+            public void Posorden(arbol temp) //Posorden
+            {
+                if (temp != null)
+                {
+                    if (temp.izq != null)
+                    {
+                        Posorden(temp.izq);
+                    }
+ 
+                    if (temp.der != null)
+                    {
+                        Posorden(temp.der);
+                    }
+ 
+                    Console.WriteLine(temp.info);
+                }
+ 
+                else
+                {
+                    Console.WriteLine("\nEl Arbol Binario Esta Vacio");
+                }
+            }
+ 
+            public void BusquedaRecursiva(arbol temp, double x)
+            {
+                if (temp == null)
+                {
+                    Console.WriteLine("\nEl Nodo {0:F2} NO Esta en el Arbol Binario", x);
+                }
+ 
+                else
+                {
+                    if (x == temp.info)
+                    {
+                        Console.WriteLine("\nEl Nodo {0:F2} SI Esta en el Arbol Binario", x);
+                    }
+ 
+                    else
+                    {
+                        if (x < temp.info)
+                        {
+                            BusquedaRecursiva(temp.izq, x);
+                        }
+ 
+                        else
+                        {
+                            BusquedaRecursiva(temp.der, x);
+                        }
+                    }
+                }
+            }
+            //busqueda iterativa
+            public void BusquedaIterativa(arbol temp, double x)
+            {
+                bool encontrado = false;
+ 
+                while (temp != null && encontrado == false)
+                {
+                    if (x == temp.info)
+                    {
+                        encontrado = true;
+                    }
+ 
+                    else
+                    {
+                        if (x < temp.info)
+                        {
+                            temp = temp.izq;
+                        }
+ 
+                        else
+                        {
+                            temp = temp.der;
+                        }
+                    }
+                }
+ 
+                if (encontrado == false)
+                {
+                    Console.WriteLine("\nEl Nodo {0:F2} NO Esta en el Arbol Binario", x);
+                }
+ 
+                else
+                {
+                    Console.WriteLine("\nEl Nodo {0:F2} SI Esta en el Arbol Binario", x);
+                }
+            }
+            //eliminar
+            public void Eliminar()
+            {
+                arbol p, q, v, s, t;
+                bool encontrado;
+                double x;
+                p = raiz;
+                q = null;
+                encontrado = false;
+ 
+                if (p != null)
+                {
+                    Console.Write("¿Nodo a Eliminar?: ");
+                    x = Int32.Parse(Console.ReadLine());
+                    while (p != null && encontrado == false)
+                    {
+                        if (p.info == x)
+                        {
+                            encontrado = true;
+                            Console.WriteLine("\nEl Nodo {0:F2} Sera Eliminado del Arbol Binaraio", p.info);
+                        }
+ 
+                        else
+                        {
+                            q = p;
+                            if (x < p.info)
+                            {
+                                p = p.izq;
+                            }
+ 
+                            else
+                            {
+                                p = p.der;
+                            }
+                        }
+                    }
+ 
+                    if (encontrado == true)
+                    {
+                        if (p.izq == null)
+                        {
+                            v = p.der;
+                        }
+ 
+                        else
+                        {
+                            if (p.der == null)
+                            {
+                                v = p.izq;
+                            }
+ 
+                            else
+                            {
+                                t = p;
+                                v = p.der;
+                                s = v.izq;
+ 
+                                while (s != null)
+                                {
+                                    t = v;
+                                    v = s;
+                                    s = v.izq;
+                                }
+ 
+                                if (t != p)
+                                {
+                                    t.izq = v.der;
+                                    v.der = p.der;
+                                }
+                            }
+ 
+                            v.izq = p.izq;
+                        }
+ 
+                        if (q == null)
+                        {
+                            raiz = v;
+                        }
+ 
+                        else
+                        {
+                            if (p == q.izq)
+                            {
+                                q.izq = v;
+                            }
+ 
+                            else
+                            {
+                                q.der = v;
+                            }
+                        }
+                    }
+ 
+                    else
+                    {
+                        Console.WriteLine("\nEl Nodo {0:F2} NO Esta en el Arbol Binario", x);
+                    }
+ 
+                }
+ 
+                else
+                {
+                    Console.WriteLine("\nEl Arbol Binario Esta Vacio");
+                }
+            }
+ 
+        }
+        //menu principal de seleccion
+        static void Main(string[] args)
+        {
+            int opcion;
+            double x;
+            arbol objeto = new arbol();
+ 
+            do
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\t\t\t\t\tMenu Arboles Binarios\n");
+                Console.WriteLine("1.- Insercion Nodos");
+                Console.WriteLine("2.- Recorrido Preorden");
+                Console.WriteLine("3.- Recorrido Inorden");
+                Console.WriteLine("4.- Recorrido Posorden");
+                Console.WriteLine("5.- Busqueda Recursiva");
+                Console.WriteLine("6.- Busqueda Iterativa");
+                Console.WriteLine("7.- Eliminacion Nodos");
+                Console.WriteLine("8.- Salir del Programa");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("\nopcion ☻☺: ");
+                opcion = int.Parse(Console.ReadLine());
+                switch (opcion)
+                {
+                    case 1:
+                        Console.Clear();
+                        objeto.Insertar();
+                        break;
+ 
+                    case 2:
+                        Console.Clear();
+                        objeto.Preorden(objeto.raiz);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\nPresione enter Para Continuar");
+                        Console.ReadLine();
+                        break;
+ 
+                    case 3:
+                        Console.Clear();
+                        objeto.Inorden(objeto.raiz);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\nPresione enter Para Continuar");
+                        Console.ReadLine();
+                        break;
+ 
+                    case 4:
+                        Console.Clear();
+                        objeto.Posorden(objeto.raiz);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\nPresione enter Para Continuar");
+                        Console.ReadLine();
+                        break;
+ 
+                    case 5:
+                        Console.Clear();
+                        Console.Write("Dato a Buscar: ");
+                        x = Double.Parse(Console.ReadLine());
+                        objeto.BusquedaRecursiva(objeto.raiz, x);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\nPresione enter Para Continuar");
+                        Console.ReadLine();
+                        break;
+ 
+                    case 6:
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("Dato a Buscar: ");
+                        x = Double.Parse(Console.ReadLine());
+                        objeto.BusquedaIterativa(objeto.raiz, x);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\nPresione enter Para Continuar");
+                        Console.ReadLine();
+                        break;
+ 
+                    case 7:
+                        Console.Clear();
+                        objeto.Eliminar();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\nPresione enter Para Continuar");
+                        Console.ReadLine();
+                        break;
+ 
+                    case 8:
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\nPresione enter Para Salir del Programa");
+                        Console.ReadLine();
+                        break;
+ 
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nOpcion Invalida");
+                        break;
+                }
+            } while (opcion != 8);
+        }
+    }
+}
+ 
+  
+
+ 
+
